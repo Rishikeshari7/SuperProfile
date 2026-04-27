@@ -1,0 +1,436 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+
+const NAV_LINKS = [
+  { label: "Home", href: "/in", active: true },
+  { label: "AutoDM", href: "/in/auto-dm", active: false },
+  { label: "Pricing", href: "/in/pricing", active: false },
+  {
+    label: "Blog",
+    href: "https://superprofile.bio/blog",
+    active: false,
+    external: true,
+  },
+];
+
+const SIGN_IN_HREF =
+  "https://superprofile.bio/signin?utm_source=SPF+Website&utm_medium=Navbar";
+const SIGNUP_HREF =
+  "https://superprofile.bio/signup?utm_source=SPF+Website&utm_medium=Navbar";
+
+const HIND_FONT_STACK =
+  '"Hind Madurai", "Hind Madurai Placeholder", sans-serif';
+
+const FullLogo = () => (
+  <svg
+    width="201"
+    height="64"
+    viewBox="0 0 201 64"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="block w-full h-full"
+    preserveAspectRatio="xMidYMid meet"
+    aria-hidden="true"
+  >
+    <path
+      d="M64.4501 33.5658C64.4501 35.0928 63.8873 36.3293 62.7641 37.2775C61.6397 38.2257 60.147 38.6993 58.2848 38.6993C56.2888 38.6993 54.6612 38.347 53.4029 37.6424V33.7419C54.9288 34.8491 56.5565 35.4028 58.2848 35.4028C58.8716 35.4028 59.3577 35.2483 59.7444 34.9372C60.1298 34.6272 60.3231 34.22 60.3231 33.7167C60.3231 33.5497 60.298 33.3896 60.2477 33.2386C60.1973 33.0876 60.1047 32.9458 59.9708 32.8108C59.8359 32.677 59.7066 32.5638 59.5808 32.4711C59.455 32.3796 59.2697 32.2698 59.0272 32.144C58.7835 32.0181 58.5777 31.9141 58.4107 31.8294C58.2425 31.7459 57.9954 31.6281 57.6683 31.4771C57.3412 31.3261 57.0769 31.2095 56.8756 31.1248C55.7855 30.6215 54.9082 30.0016 54.2459 29.2626C53.5837 28.5249 53.252 27.5435 53.252 26.3184C53.252 24.8589 53.7884 23.6807 54.8625 22.7828C55.9354 21.8861 57.4201 21.4365 59.3166 21.4365C61.0106 21.4365 62.4701 21.7225 63.6952 22.2921V25.9158C62.3363 25.1277 60.9271 24.7331 59.4676 24.7331C58.8133 24.7331 58.3146 24.868 57.9703 25.1357C57.626 25.4045 57.4544 25.7488 57.4544 26.1674C57.4544 26.5861 57.6637 26.9601 58.0835 27.2872C58.5022 27.6144 59.1313 27.9621 59.9708 28.3316C60.4901 28.5672 60.9225 28.7719 61.2668 28.9481C61.61 29.1242 62.0046 29.3679 62.4495 29.6779C62.8933 29.989 63.2456 30.315 63.5064 30.6593C63.7661 31.0036 63.988 31.4268 64.1733 31.9301C64.3575 32.4334 64.4501 32.979 64.4501 33.5658Z"
+      fill="#0F0F0F"
+    />
+    <path
+      d="M78.2874 38.6942H74.6134V36.6559C73.9419 38.0822 72.6506 38.7948 70.7381 38.7948C69.4295 38.7948 68.4104 38.2332 67.6806 37.5034C66.9508 36.7737 66.5859 35.8929 66.5859 34.4677V25.7402H70.2599V33.4394C70.2599 34.9321 70.9142 35.679 72.2228 35.679C73.8161 35.679 74.6134 34.6141 74.6134 32.4831V25.7402H78.2874V38.6942Z"
+      fill="#0F0F0F"
+    />
+    <path
+      d="M84.9806 43.2026H81.3066V25.7408H84.9806V27.7037C85.8694 26.2944 87.1528 25.5898 88.8308 25.5898C90.5088 25.5898 91.7956 26.1732 92.7942 27.3388C93.7916 28.5043 94.2915 30.0851 94.2915 32.0811C94.2915 34.0771 93.8088 35.5446 92.8445 36.7869C91.8803 38.0279 90.542 38.649 88.8308 38.649C87.1196 38.649 85.8202 37.9696 84.9806 36.6107V43.2026ZM84.9806 31.9816C84.9806 33.0717 85.2483 33.9444 85.7859 34.5987C86.3224 35.253 87.0098 35.5801 87.8494 35.5801C88.689 35.5801 89.3089 35.2747 89.8122 34.6616C90.3155 34.0497 90.5671 33.2147 90.5671 32.1577C90.5671 31.0002 90.3109 30.124 89.7996 29.5281C89.2872 28.9333 88.6375 28.6347 87.8494 28.6347C87.0613 28.6347 86.407 28.9287 85.8362 29.5155C85.2655 30.1023 84.9806 30.9247 84.9806 31.9816Z"
+      fill="#0F0F0F"
+    />
+    <path
+      d="M106.695 37.7677C105.823 38.3385 104.489 38.6233 102.694 38.6233C100.598 38.6233 98.9664 38.0159 97.7997 36.7988C96.6341 35.583 96.0508 34.0182 96.0508 32.1057C96.0508 30.0765 96.617 28.4866 97.7494 27.337C98.8818 26.1886 100.278 25.6133 101.939 25.6133C103.6 25.6133 105 26.112 105.991 27.1106C106.98 28.1091 107.475 29.5973 107.475 31.5772C107.475 31.9639 107.408 32.6261 107.274 33.5652H99.7763C100.028 34.2698 100.464 34.8154 101.085 35.2009C101.705 35.5864 102.452 35.7797 103.324 35.7797C104.616 35.7797 105.74 35.4194 106.696 34.6976V37.7677H106.695ZM102.09 28.4077C101.503 28.4077 100.983 28.6216 100.53 29.0494C100.077 29.4772 99.7751 30.1108 99.6241 30.9493H104.053V30.6473C103.935 29.1546 103.281 28.4077 102.09 28.4077Z"
+      fill="#0F0F0F"
+    />
+    <path
+      d="M113.74 38.6969H110.066L110.092 25.7396H113.74V28.105C113.975 27.3672 114.365 26.7759 114.911 26.3309C115.455 25.8871 116.089 25.6641 116.81 25.6641C117.213 25.6641 117.531 25.6984 117.767 25.7647V29.2374C117.364 29.0532 116.903 28.9606 116.383 28.9606C115.595 28.9606 114.956 29.25 114.47 29.8288C113.983 30.4075 113.74 31.1751 113.74 32.1313V38.6969Z"
+      fill="#0F0F0F"
+    />
+    <path
+      d="M125.441 32.1466H122.823V38.6905H120.785V21.4277H125.239C127.202 21.4277 128.75 21.9356 129.882 22.9502C131.014 23.9648 131.581 25.2779 131.581 26.8884C131.581 28.3983 131.019 29.6519 129.895 30.6505C128.77 31.6491 127.286 32.1478 125.441 32.1478V32.1466ZM125.264 23.1641H122.823V30.4103H125.441C126.715 30.4103 127.713 30.0797 128.435 29.4163C129.156 28.754 129.517 27.911 129.517 26.8873C129.517 25.7469 129.148 24.8409 128.41 24.1695C127.672 23.4992 126.623 23.1629 125.264 23.1629V23.1641Z"
+      fill="#0F0F0F"
+    />
+    <path
+      d="M136.361 38.6939H134.373L134.398 25.7342H136.361V27.9739C137.031 26.3976 138.189 25.6084 139.834 25.6084C140.136 25.6084 140.37 25.6256 140.538 25.6587V27.6215C140.186 27.5049 139.826 27.4454 139.456 27.4454C138.568 27.4454 137.829 27.8572 137.242 28.6785C136.654 29.5009 136.361 30.448 136.361 31.522V38.695V38.6939Z"
+      fill="#0F0F0F"
+    />
+    <path
+      d="M153.822 32.4025C153.822 34.2978 153.284 35.866 152.211 37.1082C151.137 38.3493 149.662 38.9704 147.783 38.9704C145.903 38.9704 144.508 38.3538 143.442 37.1208C142.376 35.8877 141.844 34.3321 141.844 32.4528C141.844 30.5735 142.393 28.9767 143.492 27.7105C144.59 26.4442 146.021 25.8105 147.783 25.8105C149.711 25.8105 151.2 26.4316 152.249 27.6727C153.297 28.9138 153.822 30.4911 153.822 32.4036V32.4025ZM143.908 32.4276C143.908 33.7533 144.261 34.8812 144.965 35.8122C145.67 36.7433 146.609 37.2089 147.784 37.2089C149.058 37.2089 150.039 36.7525 150.728 35.8374C151.415 34.9235 151.76 33.7865 151.76 32.4276C151.76 31.0688 151.433 29.8574 150.778 28.9424C150.124 28.0284 149.125 27.5709 147.784 27.5709C146.576 27.5709 145.628 28.041 144.94 28.9801C144.252 29.9192 143.908 31.0688 143.908 32.4276Z"
+      fill="#0F0F0F"
+    />
+    <path
+      d="M162.654 27.3474H159.835V38.6931H157.848V27.3474H155.658V25.7368H157.848V24.8046C157.848 23.5636 158.178 22.5821 158.841 21.8604C159.504 21.1398 160.422 20.7783 161.597 20.7783C162 20.7783 162.41 20.8378 162.83 20.9545V22.7663C162.427 22.6325 162.042 22.565 161.672 22.565C161.135 22.565 160.696 22.7503 160.351 23.1186C160.007 23.4881 159.835 24.0577 159.835 24.8298V25.7368H162.654V27.3474Z"
+      fill="#0F0F0F"
+    />
+    <path
+      d="M167.031 21.0562C167.283 21.3078 167.408 21.6178 167.408 21.9873C167.408 22.3567 167.283 22.6621 167.031 22.9058C166.779 23.1494 166.468 23.2706 166.1 23.2706C165.731 23.2706 165.424 23.1494 165.181 22.9058C164.938 22.6633 164.816 22.3567 164.816 21.9873C164.816 21.6178 164.938 21.3078 165.181 21.0562C165.424 20.8045 165.73 20.6787 166.1 20.6787C166.469 20.6787 166.779 20.8045 167.031 21.0562ZM167.106 38.693H165.118V25.7368H167.106V38.693Z"
+      fill="#0F0F0F"
+    />
+    <path
+      d="M172.97 38.6905H170.982V21.4277H172.97V38.6905Z"
+      fill="#0F0F0F"
+    />
+    <path
+      d="M186.054 38.092C185.063 38.6124 183.857 38.8721 182.43 38.8721C180.501 38.8721 178.945 38.2807 177.762 37.098C176.58 35.9153 175.988 34.3516 175.988 32.4048C175.988 30.458 176.517 28.7731 177.574 27.5984C178.631 26.4248 179.989 25.8369 181.65 25.8369C183.311 25.8369 184.51 26.3494 185.45 27.3719C186.389 28.3957 186.859 29.8461 186.859 31.7254C186.859 32.263 186.817 32.7571 186.733 33.2101H178.028C178.179 34.4683 178.657 35.4326 179.462 36.104C180.267 36.7754 181.324 37.1106 182.633 37.1106C184.058 37.1106 185.2 36.8177 186.055 36.2298V38.092H186.054ZM181.65 27.5744C180.694 27.5744 179.881 27.9187 179.209 28.6061C178.538 29.2947 178.144 30.275 178.027 31.5504H184.87V31.0471C184.87 29.9902 184.584 29.1472 184.015 28.5181C183.444 27.889 182.656 27.5744 181.649 27.5744H181.65Z"
+      fill="#0F0F0F"
+    />
+    <g opacity="0.3">
+      <path
+        d="M22.1964 52.9992C21.7594 52.9992 21.3797 52.7349 21.2287 52.3254L17.7308 42.8739C16.6213 39.8748 14.265 37.5185 11.2659 36.409L1.81434 32.9111C1.40485 32.7601 1.14062 32.3792 1.14062 31.9434C1.14062 31.5076 1.40485 31.1267 1.81434 30.9757L11.2659 27.4779C14.265 26.3684 16.6213 24.0121 17.7308 21.0129L21.2287 11.5614C21.3797 11.1519 21.7606 10.8877 22.1964 10.8877C22.6333 10.8877 23.0131 11.1519 23.164 11.5614L26.6619 21.0129C27.7714 24.0121 30.1277 26.3684 33.1269 27.4779L42.5784 30.9757C42.9879 31.1267 43.2521 31.5076 43.2521 31.9434C43.2521 32.3792 42.9879 32.7601 42.5784 32.9111L33.1269 36.409C30.1277 37.5185 27.7714 39.8748 26.6619 42.8739L23.164 52.3254C23.0131 52.7349 22.6322 52.9992 22.1964 52.9992Z"
+        fill="url(#sp-logo-paint0)"
+      />
+    </g>
+    <path
+      d="M8.29819 45.1855L10.0929 38.8853C10.126 38.7068 10.2427 38.5558 10.4063 38.4769L21.0474 33.3651L18.9221 32.4306C18.4863 32.2384 18.0791 31.9822 17.7394 31.6471C17.1572 31.074 16.7626 30.3271 16.6528 29.5047C16.4434 27.9308 17.2407 26.4312 18.611 25.7129L34.118 16.9602C34.4966 16.7463 34.9656 17.0186 34.9679 17.4532L34.1992 23.9159C34.2003 24.1264 34.086 24.3208 33.9007 24.4203L23.4403 30.0709L26.1272 31.2799C27.3419 31.9628 28.066 33.2519 28.0191 34.6439C27.9722 36.0337 27.1635 37.269 25.9098 37.8684L9.1023 45.8043C8.68137 46.0034 8.21354 45.6408 8.29933 45.1832L8.29819 45.1855Z"
+      fill="url(#sp-logo-paint1)"
+    />
+    <defs>
+      <linearGradient
+        id="sp-logo-paint0"
+        x1="1.13948"
+        y1="31.9434"
+        x2="43.2532"
+        y2="31.9434"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#01BCFF" />
+        <stop offset="0.12" stopColor="#02B6FE" />
+        <stop offset="0.29" stopColor="#05A5FE" />
+        <stop offset="0.47" stopColor="#0A8AFE" />
+        <stop offset="0.67" stopColor="#1264FE" />
+        <stop offset="0.73" stopColor="#1558FE" />
+      </linearGradient>
+      <linearGradient
+        id="sp-logo-paint1"
+        x1="8.28789"
+        y1="31.3748"
+        x2="34.9679"
+        y2="31.3748"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop offset="0.27" stopColor="#1269FE" />
+        <stop offset="0.45" stopColor="#0B88FE" />
+        <stop offset="0.65" stopColor="#05A3FE" />
+        <stop offset="0.82" stopColor="#02B4FE" />
+        <stop offset="0.95" stopColor="#01BAFF" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const IconLogo = () => (
+  <svg
+    width="44"
+    height="44"
+    viewBox="0 0 44 64"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="block"
+    aria-hidden="true"
+  >
+    <g opacity="0.3">
+      <path
+        d="M22.1964 52.9992C21.7594 52.9992 21.3797 52.7349 21.2287 52.3254L17.7308 42.8739C16.6213 39.8748 14.265 37.5185 11.2659 36.409L1.81434 32.9111C1.40485 32.7601 1.14062 32.3792 1.14062 31.9434C1.14062 31.5076 1.40485 31.1267 1.81434 30.9757L11.2659 27.4779C14.265 26.3684 16.6213 24.0121 17.7308 21.0129L21.2287 11.5614C21.3797 11.1519 21.7606 10.8877 22.1964 10.8877C22.6333 10.8877 23.0131 11.1519 23.164 11.5614L26.6619 21.0129C27.7714 24.0121 30.1277 26.3684 33.1269 27.4779L42.5784 30.9757C42.9879 31.1267 43.2521 31.5076 43.2521 31.9434C43.2521 32.3792 42.9879 32.7601 42.5784 32.9111L33.1269 36.409C30.1277 37.5185 27.7714 39.8748 26.6619 42.8739L23.164 52.3254C23.0131 52.7349 22.6322 52.9992 22.1964 52.9992Z"
+        fill="url(#sp-icon-paint0)"
+      />
+    </g>
+    <path
+      d="M8.29819 45.1855L10.0929 38.8853C10.126 38.7068 10.2427 38.5558 10.4063 38.4769L21.0474 33.3651L18.9221 32.4306C18.4863 32.2384 18.0791 31.9822 17.7394 31.6471C17.1572 31.074 16.7626 30.3271 16.6528 29.5047C16.4434 27.9308 17.2407 26.4312 18.611 25.7129L34.118 16.9602C34.4966 16.7463 34.9656 17.0186 34.9679 17.4532L34.1992 23.9159C34.2003 24.1264 34.086 24.3208 33.9007 24.4203L23.4403 30.0709L26.1272 31.2799C27.3419 31.9628 28.066 33.2519 28.0191 34.6439C27.9722 36.0337 27.1635 37.269 25.9098 37.8684L9.1023 45.8043C8.68137 46.0034 8.21354 45.6408 8.29933 45.1832L8.29819 45.1855Z"
+      fill="url(#sp-icon-paint1)"
+    />
+    <defs>
+      <linearGradient
+        id="sp-icon-paint0"
+        x1="1.13948"
+        y1="31.9434"
+        x2="43.2532"
+        y2="31.9434"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#01BCFF" />
+        <stop offset="0.12" stopColor="#02B6FE" />
+        <stop offset="0.29" stopColor="#05A5FE" />
+        <stop offset="0.47" stopColor="#0A8AFE" />
+        <stop offset="0.67" stopColor="#1264FE" />
+        <stop offset="0.73" stopColor="#1558FE" />
+      </linearGradient>
+      <linearGradient
+        id="sp-icon-paint1"
+        x1="8.28789"
+        y1="31.3748"
+        x2="34.9679"
+        y2="31.3748"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop offset="0.27" stopColor="#1269FE" />
+        <stop offset="0.45" stopColor="#0B88FE" />
+        <stop offset="0.65" stopColor="#05A3FE" />
+        <stop offset="0.82" stopColor="#02B4FE" />
+        <stop offset="0.95" stopColor="#01BAFF" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const HamburgerIcon = ({ open }: { open: boolean }) => (
+  <span
+    aria-hidden="true"
+    className="relative inline-block w-[26px] h-[18px]"
+  >
+    <span
+      className="absolute left-0 right-0 h-[2px] bg-[var(--navbar-link-text)] rounded-full transition-all duration-200"
+      style={{
+        top: open ? "8px" : "4px",
+        transform: open ? "rotate(45deg)" : "none",
+      }}
+    />
+    <span
+      className="absolute left-0 right-0 h-[2px] bg-[var(--navbar-link-text)] rounded-full transition-all duration-200"
+      style={{
+        top: open ? "8px" : "13px",
+        transform: open ? "rotate(-45deg)" : "none",
+      }}
+    />
+  </span>
+);
+
+export default function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  return (
+    <div
+      className="sticky top-0 z-50 w-full bg-[var(--navbar-bg)]"
+      style={{ fontFamily: HIND_FONT_STACK }}
+    >
+      <div
+        className="mx-auto flex w-full flex-row items-center justify-center overflow-hidden bg-[var(--navbar-bg)] px-[14px] py-[10px] md:px-0"
+        style={{ maxWidth: "1440px" }}
+      >
+        <div className="flex w-full md:w-[97%] flex-row items-center justify-between gap-[12px] h-[44px] md:h-[64px]">
+          {/* Logo */}
+          <Link
+            href="/in"
+            aria-label="SuperProfile home"
+            className="flex-shrink-0 block"
+          >
+            {/* Desktop full wordmark */}
+            <span className="hidden lg:block w-[193px] h-[61px]">
+              <FullLogo />
+            </span>
+            {/* Tablet/mobile icon-only logo */}
+            <span className="block lg:hidden">
+              <IconLogo />
+            </span>
+          </Link>
+
+          {/* Center pill nav (desktop + mid-tablet) */}
+          <nav
+            aria-label="Primary"
+            className="hidden md:flex flex-row items-center gap-[4px] rounded-[999px] bg-[var(--navbar-pill-group-bg)] p-[4px]"
+            style={{ opacity: 0.95 }}
+          >
+            {NAV_LINKS.map((link) => {
+              const baseClasses =
+                "flex flex-row items-center justify-center px-[24px] py-[8px] rounded-[999px] cursor-pointer no-underline transition-colors duration-150";
+              const inactiveClasses =
+                "bg-[var(--navbar-pill-group-bg)] hover:bg-[var(--navbar-pill-hover-bg)]";
+              const activeClasses =
+                "bg-[var(--navbar-pill-active-bg)]";
+              const className = `${baseClasses} ${
+                link.active ? activeClasses : inactiveClasses
+              }`;
+
+              const label = (
+                <span
+                  className="text-[var(--navbar-link-text)] font-medium"
+                  style={{
+                    fontFamily: HIND_FONT_STACK,
+                    fontSize: "16px",
+                    lineHeight: "21px",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  {link.label}
+                </span>
+              );
+
+              if (link.external) {
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    rel="noopener"
+                    className={className}
+                  >
+                    {label}
+                  </a>
+                );
+              }
+
+              return (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className={className}
+                  aria-current={link.active ? "page" : undefined}
+                >
+                  {label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Right group: Sign In + CTA (desktop+) */}
+          <div className="hidden md:flex flex-row items-center gap-[24px]">
+            <a
+              href={SIGN_IN_HREF}
+              rel="noopener"
+              className="hidden lg:inline-block cursor-pointer no-underline text-[var(--navbar-signin-text)] font-medium hover:opacity-80 transition-opacity"
+              style={{
+                fontFamily: HIND_FONT_STACK,
+                fontSize: "16px",
+                lineHeight: "22px",
+              }}
+            >
+              Sign In
+            </a>
+
+            <a
+              href={SIGNUP_HREF}
+              rel="noopener"
+              className="inline-flex flex-row items-center justify-center px-[28px] py-[11px] rounded-[48px] cursor-pointer no-underline overflow-hidden bg-[var(--navbar-cta-bg)] hover:bg-[var(--navbar-cta-bg-hover)] transition-colors duration-150"
+            >
+              <span
+                className="text-[var(--navbar-cta-text)] font-medium whitespace-nowrap"
+                style={{
+                  fontFamily: HIND_FONT_STACK,
+                  fontSize: "18px",
+                  lineHeight: "22px",
+                }}
+              >
+                Start for Free
+              </span>
+            </a>
+          </div>
+
+          {/* Mobile right cluster: hamburger + Get Started */}
+          <div className="flex md:hidden flex-row items-center gap-[12px]">
+            <button
+              type="button"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              onClick={() => setMobileOpen((v) => !v)}
+              className="flex items-center justify-center w-[40px] h-[40px] rounded-full bg-transparent"
+            >
+              <HamburgerIcon open={mobileOpen} />
+            </button>
+
+            <a
+              href={SIGNUP_HREF}
+              rel="noopener"
+              className="inline-flex flex-row items-center justify-center px-[20px] py-[10px] rounded-[21px] cursor-pointer no-underline bg-[var(--navbar-cta-bg)] hover:bg-[var(--navbar-cta-bg-hover)] transition-colors duration-150"
+            >
+              <span
+                className="text-[var(--navbar-cta-text)] font-medium whitespace-nowrap"
+                style={{
+                  fontFamily: HIND_FONT_STACK,
+                  fontSize: "16px",
+                  lineHeight: "21px",
+                }}
+              >
+                Get Started
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile dropdown panel */}
+      {mobileOpen && (
+        <div
+          className="md:hidden border-t border-[var(--navbar-pill-active-bg)] bg-[var(--navbar-bg)]"
+          style={{ fontFamily: HIND_FONT_STACK }}
+        >
+          <nav
+            aria-label="Mobile primary"
+            className="flex flex-col px-[14px] py-[8px]"
+          >
+            {NAV_LINKS.map((link) => {
+              const className = `flex items-center px-[16px] py-[12px] rounded-[12px] no-underline transition-colors duration-150 ${
+                link.active
+                  ? "bg-[var(--navbar-pill-active-bg)]"
+                  : "hover:bg-[var(--navbar-pill-group-bg)]"
+              }`;
+
+              const label = (
+                <span
+                  className="text-[var(--navbar-link-text)] font-medium"
+                  style={{
+                    fontFamily: HIND_FONT_STACK,
+                    fontSize: "16px",
+                    lineHeight: "21px",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  {link.label}
+                </span>
+              );
+
+              if (link.external) {
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    rel="noopener"
+                    className={className}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {label}
+                  </a>
+                );
+              }
+
+              return (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className={className}
+                  aria-current={link.active ? "page" : undefined}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {label}
+                </Link>
+              );
+            })}
+
+            <a
+              href={SIGN_IN_HREF}
+              rel="noopener"
+              className="flex items-center px-[16px] py-[12px] no-underline mt-[4px]"
+              onClick={() => setMobileOpen(false)}
+            >
+              <span
+                className="text-[var(--navbar-signin-text)] font-medium"
+                style={{
+                  fontFamily: HIND_FONT_STACK,
+                  fontSize: "16px",
+                  lineHeight: "22px",
+                }}
+              >
+                Sign In
+              </span>
+            </a>
+          </nav>
+        </div>
+      )}
+    </div>
+  );
+}
